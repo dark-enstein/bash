@@ -39,11 +39,13 @@ Linux Distros:
 ### 12. Ansible ([PIP Install](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#:~:text=the%20Developer%20Guide.-,Installing%20devel%20from%20GitHub%20with%20pip,-%EF%83%81))
 
 ### 13. CLI Tools
-- Windows Choco
+- Windows Choco [run PS install script](https://chocolatey.org/install#:~:text=Install%20Chocolatey%20for%20Individual%20Use%3A)
+    **All Choco tools will be installed using the DevEnvSetup.sh**
 - PIP
 - VIM
 - Tree
 - AWS CLI
+- cURL
 
 ### 14. Browser SetUp
 - Chrome
