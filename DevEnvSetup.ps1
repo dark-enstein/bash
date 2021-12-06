@@ -2,6 +2,11 @@
 
 Set-Alias -Name echo -Value Write-Host
 Set-Alias -Name sleep -Value Start-Sleep
+alias gs='git show --pretty=oneline'
+alias gpom='git push origin master'
+alias gpod='git push origin development'
+alias grom='git reset --hard origin/master'
+alias gp='git pull'
 
 echo 'New sh, starts'
 
