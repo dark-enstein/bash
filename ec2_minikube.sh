@@ -4,7 +4,7 @@ sudo apt-get install \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
+    lsb-release -y
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
@@ -13,7 +13,7 @@ echo \
 
 sudo apt-get update
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
 apt-cache madison docker-ce
 
@@ -40,7 +40,5 @@ chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
 kubectl version -o yaml
-//minikube and kubectl is installed.
 
-Start minikube
 minikube start --driver=docker --memory 4096
