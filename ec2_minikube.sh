@@ -1,4 +1,6 @@
-sudo apt-get update
+#! /bin/bash
+
+sudo apt-get update -y
 
 sudo apt-get install \
     ca-certificates \
@@ -7,6 +9,7 @@ sudo apt-get install \
     lsb-release -y
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -40,5 +43,7 @@ chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
 kubectl version -o yaml
+
+sudo usermod -aG docker ubuntu && newgrp docker
 
 minikube start --driver=docker --memory 4096
