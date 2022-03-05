@@ -1,0 +1,23 @@
+stream {
+
+        upstream jaegar {
+                least_conn;
+                server 192.168.49.2:31001;
+                }
+
+        upstream web {
+                least_conn;
+                server 192.168.49.2:30080;
+                }
+
+        server {
+                listen 30080;
+                proxy_pass web;
+                }
+
+        server {
+                listen 31001;
+                proxy_pass jaegar;
+                }
+
+}
