@@ -46,4 +46,6 @@ kubectl version -o yaml
 
 sudo usermod -aG docker ubuntu && newgrp docker
 
+sleep 5
+
 minikube start --driver=docker --memory 4096
