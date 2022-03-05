@@ -53,3 +53,9 @@ sleep 5
 minikube start --driver=docker --memory 4096
 
 cd istio-fleetman/_course_files
+
+sudo apt update
+
+sudo apt install -y nginx
+
+
