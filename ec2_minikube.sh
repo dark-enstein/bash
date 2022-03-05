@@ -46,6 +46,10 @@ kubectl version -o yaml
 
 sudo usermod -aG docker ubuntu && newgrp docker
 
+git clone https://github.com/DickChesterwood/istio-fleetman.git
+
 sleep 5
 
 minikube start --driver=docker --memory 4096
+
+cd istio-fleetman/_course_files
