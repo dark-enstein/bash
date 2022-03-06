@@ -9,6 +9,17 @@ stream {
                 least_conn;
                 server 192.168.49.2:30080;
                 }
+        
+        upstream kiali {
+                least_conn;
+                server 192.168.49.2:31000;
+                }
+                
+        upstream grafana {
+                least_conn;
+                server 192.168.49.2:31002;
+                }
+      
 
         server {
                 listen 30080;
@@ -18,6 +29,16 @@ stream {
         server {
                 listen 31001;
                 proxy_pass jaegar;
+                }
+
+        server {
+                listen 31000;
+                proxy_pass kiali;
+                }
+
+        server {
+                listen 31002;
+                proxy_pass grafana;
                 }
 
 }
