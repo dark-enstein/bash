@@ -1,0 +1,43 @@
+#Necessary aliases
+
+alias vi="sudo vi"
+alias k="kubectl"
+
+#Downloading scripts, giving the right permissions and executing it
+curl https://raw.githubusercontent.com/Ayobama/Documentations/master/ec2_minikube.sh?token=GHSAT0AAAAAABSECVDVE7LXDAH5NDQIAUBKYRFIOXQ -o ec2.sh
+
+chmod +x ./ec2.sh
+
+./ec2.sh
+
+#repeat the git clone all the way down to installing nginx
+echo "Setting current user to have administrative permissions to run docker commands"
+
+sudo usermod -aG docker ubuntu && newgrp docker
+
+echo "Cloning Dick Chesterwood Istio Fleetmans' course"
+
+git clone https://github.com/DickChesterwood/istio-fleetman.git
+
+sleep 5
+
+echo "Start Minikube"
+
+minikube start --driver=docker --memory 4096
+
+echo "Changed working directory to Course files"
+
+cd istio-fleetman/_course_files
+
+echo "Install Nginx"
+
+sudo apt update
+
+sudo apt install -y nginx
+
+#configuring nginx
+
+sudo vi /etc/nginx/nginx.conf
+
+
+
