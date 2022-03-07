@@ -1,3 +1,5 @@
+!# /bin/bash
+
 #Necessary aliases
 
 alias vi="sudo vi"
