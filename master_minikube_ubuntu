@@ -6,7 +6,7 @@ alias vi="sudo vi"
 alias k="kubectl"
 
 #Downloading scripts, giving the right permissions and executing it
-curl https://raw.githubusercontent.com/Ayobama/Documentations/master/ec2_minikube.sh?token=GHSAT0AAAAAABR2SAOYW4QX5BQFVJWDEMX6YRHIPCA -o ec2.sh
+curl https://raw.githubusercontent.com/Ayobama/Documentations/master/ec2_minikube.sh -o ec2.sh
 
 chmod +x ./ec2.sh
 
