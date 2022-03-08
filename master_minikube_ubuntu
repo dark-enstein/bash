@@ -6,7 +6,7 @@ alias vi="sudo vi"
 alias k="kubectl"
 
 #Downloading scripts, giving the right permissions and executing it
-curl https://raw.githubusercontent.com/Ayobama/Documentations/master/ec2_minikube.sh?token=GHSAT0AAAAAABSECVDVE7LXDAH5NDQIAUBKYRFIOXQ -o ec2.sh
+curl https://raw.githubusercontent.com/Ayobama/Documentations/master/ec2_minikube.sh?token=GHSAT0AAAAAABR2SAOYW4QX5BQFVJWDEMX6YRHIPCA -o ec2.sh
 
 chmod +x ./ec2.sh
 
@@ -31,15 +31,16 @@ echo "Changed working directory to Course files"
 
 cd istio-fleetman/_course_files
 
-echo "Install Nginx"
-
-sudo apt update
-
-sudo apt install -y nginx
-
 #configuring nginx
 
-sudo vi /etc/nginx/nginx.conf
+#sudo vi /etc/nginx/nginx.conf
+
+echo "Configure portforwarding instead"
+
+echo "kubectl port-forward <pod_name> <upstream_port>:<source_port>"
+
+echo Completed!
+
 
 
 
