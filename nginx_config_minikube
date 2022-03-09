@@ -19,6 +19,16 @@ stream {
                 least_conn;
                 server 192.168.49.2:31002;
                 }
+                
+        upstream argo_server_1 {
+                least_conn;
+                server 10.97.211.42:80;
+                }
+                
+        upstream argo_server_2 {
+                least_conn;
+                server 10.97.211.42:443;
+                }
       
 
         server {
@@ -39,6 +49,16 @@ stream {
         server {
                 listen 31002;
                 proxy_pass grafana;
+                }
+                
+        server {
+                listen 80;
+                proxy_pass argo_server_1;
+                }
+                
+        server {
+                listen 443;
+                proxy_pass argo_server_2;
                 }
 
 }
