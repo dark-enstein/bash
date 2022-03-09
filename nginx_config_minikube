@@ -52,12 +52,12 @@ stream {
                 }
                 
         server {
-                listen 80;
+                listen 8081;
                 proxy_pass argo_server_1;
                 }
                 
         server {
-                listen 443;
+                listen 4433;
                 proxy_pass argo_server_2;
                 }
 
