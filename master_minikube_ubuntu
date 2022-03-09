@@ -31,6 +31,20 @@ echo "Changed working directory to Course files"
 
 cd istio-fleetman/_course_files
 
+cd _course_files/
+
+cd 1\ Telemetry/
+
+kubectl apply -f 1-istio-init.yaml 
+
+kubectl apply -f 2-istio-minikube.yaml
+
+kubectl apply -f 3-kiali-secret.yaml 
+
+kubectl apply -f 4-label-default-namespace.yaml
+
+kubectl apply -f 5-application-no-istio.yaml
+
 #configuring nginx
 
 #sudo vi /etc/nginx/nginx.conf
