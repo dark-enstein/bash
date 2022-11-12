@@ -26,6 +26,8 @@ apt-cache madison docker-ce
 
 sudo systemctl status docker
 
+sudo apt-get install docker-compose -y
+
 sudo apt update -y
 
 sudo apt upgrade -y
