@@ -1,0 +1,112 @@
+name: pr
+
+on: 
+  pull_request:
+    branches:
+      - develop
+
+env:
+  SHORT_SHA: $(echo ${{ github.sha }} | cut -c 1-8)
+  ECR_REPOSITORY: dotmfb-dev-${{ github.ref_name }}
+  AWS_REGION: eu-central-1
+  DOTBANK_DEPLOYER: ${{ secrets.DOTBANK_DEPLOYER }}
+  DOTBANK_DEPLOYER_PASSWORD: ${{ secrets.DOTBANK_DEPLOYER_PASSWORD }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+jobs:
+  # test:
+  #   runs-on: ubuntu-latest
+  #   services:
+  #     redis:
+  #       image: redis
+  #       ports:
+  #         - "6379:6379"
+  #       options: >-
+  #         --health-cmd "redis-cli ping"
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v3
+  #     - name: jdk8
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         java-version: "8"
+  #         cache: "maven"
+  #         distribution: "adopt"
+  #     - name: test
+  #       env:
+  #         REDIS_HOST: localhost
+  #         REDIS_PORT: 6379
+  #       run: |
+  #         ./mvnw test
+          
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    # needs:
+    #   - test
+    steps:
+      - name: Github variables
+        run: |
+          echo github.ref: ${{ github.ref }}
+          echo github.ref_type: ${{ github.ref_type }}
+          echo github.ref_name: ${{ github.ref_name }}
+          echo github.head_ref: ${{ github.head_ref }}
+          echo github.sha: ${{ github.sha }}
+
+      - name: Clone
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Create repository
+        # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecr/create-repository.html
+        run: |
+          aws ecr describe-repositories \
+            --repository-names ${{ env.ECR_REPOSITORY }} || aws ecr create-repository \
+            --repository-name ${{ env.ECR_REPOSITORY }} \
+            --query 'repository.repositoryUri' \
+            --output text \
+            2>/dev/null
+
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and publish to ECR
+        run: |
+          export BRANCH_NAME=${{ env.ECR_REPOSITORY }}
+          export VERSION=${{ steps.slug.outputs.sha8 }}
+          bash .mvn/publish.sh
+          
+      - uses: mikefarah/yq@master
+        with:
+          cmd: yq eval '.spec.template.spec.containers[0].image = "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.slug.outputs.sha8 }}"' -i k8s/overlays/pr/deployment.yaml
+        
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply image name changes
+      
+      - uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: |
+            preview
