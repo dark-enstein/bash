@@ -33,3 +33,7 @@ sudo apt update -y
 sudo apt upgrade -y
 
 sudo usermod -aG docker $USER
+
+# Configure docker start-on-build
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
