@@ -31,3 +31,5 @@ sudo apt-get install docker-compose -y
 sudo apt update -y
 
 sudo apt upgrade -y
+
+sudo usermod -aG docker $USER
